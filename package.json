@@ -1,13 +1,31 @@
 {
   "name": "audio-accent-converter",
   "version": "1.0.0",
-  "description": "Audio accent converter extension",
+  "description": "Audio accent converter website",
   "type": "module",
   "scripts": {
-    "test:api": "node test-api.js"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "vitest",
+    "deploy": "serverless deploy"
   },
   "dependencies": {
-    "form-data": "^4.0.0",
-    "node-fetch": "^2.7.0"
+    "@headlessui/react": "^1.7.17",
+    "@heroicons/react": "^2.0.18",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-dropzone": "^14.2.3",
+    "ytdl-core": "^4.11.5"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.0.4",
+    "autoprefixer": "^10.4.15",
+    "postcss": "^8.4.29",
+    "serverless": "^3.34.0",
+    "serverless-offline": "^12.0.4",
+    "tailwindcss": "^3.3.3",
+    "vite": "^4.4.9",
+    "vitest": "^0.34.3"
   }
 }

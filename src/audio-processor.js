@@ -1,5 +1,6 @@
 import { state } from './state.js';
 import { showError } from './utils.js';
+import { config } from './config.js';
 
 export async function startProcessing() {
   try {
@@ -65,13 +66,13 @@ async function processNextInQueue() {
       return;
     }
 
-    console.log('Sending request to API Gateway...');
+    console.log('Sending request to Lambda...');
     const formData = new FormData();
     formData.append('audio', audioBlob);
     formData.append('accent', settings.accent || 'en-US');
     formData.append('voice', settings.voice || 'Matthew');
 
-    const response = await fetch('https://gdtshkeye0.execute-api.us-east-1.amazonaws.com/prod/process-audio', {
+    const response = await fetch(`${config.API_ENDPOINT}/process-audio`, {
       method: 'POST',
       body: formData,
       headers: {
@@ -94,7 +95,6 @@ async function processNextInQueue() {
     state.isProcessing = false;
   }
 
-  // Continue processing queue after a short delay
   setTimeout(() => processNextInQueue(), 100);
 }
 

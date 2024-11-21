@@ -29,7 +29,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
   function updateStatus(enabled) {
     status.textContent = enabled ? 'Accent conversion active' : 'Accent conversion inactive';
-    status.className = 'status ' + (enabled ? 'active' : 'inactive');
+    status.className = enabled 
+      ? 'bg-green-100 text-green-800 border border-green-200' 
+      : 'bg-red-100 text-red-800 border border-red-200';
     toggleButton.textContent = enabled ? 'Disable' : 'Enable';
+    toggleButton.className = enabled
+      ? 'w-full bg-red-600 text-white py-2.5 px-4 rounded-lg font-medium hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-colors'
+      : 'w-full bg-indigo-600 text-white py-2.5 px-4 rounded-lg font-medium hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-colors';
   }
 });

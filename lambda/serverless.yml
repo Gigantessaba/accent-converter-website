@@ -1,0 +1,59 @@
+service: audio-accent-converter
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  stage: ${opt:stage, 'dev'}
+  region: ${opt:region, 'us-east-1'}
+  
+  environment:
+    BUCKET_NAME: ${self:custom.bucketName}
+    
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - s3:PutObject
+        - s3:GetObject
+        - s3:DeleteObject
+      Resource: 
+        - arn:aws:s3:::${self:custom.bucketName}/*
+    - Effect: Allow
+      Action:
+        - transcribe:StartTranscriptionJob
+        - transcribe:GetTranscriptionJob
+      Resource: "*"
+    - Effect: Allow
+      Action:
+        - polly:SynthesizeSpeech
+      Resource: "*"
+
+custom:
+  bucketName: audio-accent-converter-${self:provider.stage}
+
+functions:
+  processAudio:
+    handler: index.handler
+    events:
+      - http:
+          path: process-audio
+          method: post
+          cors: true
+    timeout: 60
+    memorySize: 2048
+
+resources:
+  Resources:
+    AudioBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:custom.bucketName}
+        PublicAccessBlockConfiguration:
+          BlockPublicAcls: true
+          BlockPublicPolicy: true
+          IgnorePublicAcls: true
+          RestrictPublicBuckets: true
+        LifecycleConfiguration:
+          Rules:
+            - Id: DeleteOldFiles
+              Status: Enabled
+              ExpirationInDays: 1
